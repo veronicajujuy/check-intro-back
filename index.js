@@ -1,7 +1,10 @@
 import { obtenerRepos } from './funciones/obtenerRepos.js';
 import {comprobarRepositorios, comprobarExistenCommits, comprobarExistenBranches} from './prueba-intro.js'
 import express from 'express'
+import cors from 'cors'
 const app = express();
+
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('Hola mundo!');
