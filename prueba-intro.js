@@ -1,5 +1,4 @@
 import axios from "axios"
-import {repos} from "./repos.js"
 import { token } from "./token.js";
 import { obtenerRepos } from "./funciones/obtenerRepos.js";
 
@@ -102,7 +101,7 @@ const comprobarBranches = async repo =>{
 
 
 
-async function comprobarRepositorios() {
+async function comprobarRepositorios(repos) {
 
     const usuariosGit = repos.map(item => {
         return obtenerUsuarioYNombreRepo(item)
@@ -114,7 +113,7 @@ async function comprobarRepositorios() {
     return Promise.all(trabajosGit)
 }
 
-async function comprobarExistenCommits() {
+async function comprobarExistenCommits(repos) {
 
     const usuariosGit = repos.map(item => {
         return obtenerUsuarioYNombreRepo(item)
@@ -126,7 +125,7 @@ async function comprobarExistenCommits() {
     return Promise.all(trabajosGit)
 }
 
-async function comprobarExistenBranches() {
+async function comprobarExistenBranches(repos) {
 
     const usuariosGit = repos.map(item => {
         return obtenerUsuarioYNombreRepo(item)
