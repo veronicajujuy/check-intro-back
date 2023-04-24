@@ -85,7 +85,6 @@ const comprobarBranches = async repo =>{
         });
     
         const branches = await respuestaBranches.data;
-        console.log(branches)
         hasBranches = branches.map(branch => branch.name)
     }   catch (error) {
         console.log(`El repositorio ${repo.nombreRepo} no existe.`);
