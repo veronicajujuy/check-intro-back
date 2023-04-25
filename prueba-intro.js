@@ -17,6 +17,10 @@ const obtenerUsuarioYNombreRepo = (direccion) => {
 const comprobarReposGit = async (repo) => {
         const urlRepo = `https://api.github.com/repos/${repo.usuario}/${repo.nombreRepo}`;
         let existe = false;
+        let hasCommits = 0;
+        let hasBranches = [];
+        const urlCommits = `https://api.github.com/repos/${repo.usuario}/${repo.nombreRepo}/commits`;
+        const urlBranches = `https://api.github.com/repos/${repo.usuario}/${repo.nombreRepo}/branches`;
 
         // Comprobar si el repositorio existe
         try {
@@ -33,10 +37,45 @@ const comprobarReposGit = async (repo) => {
         } catch (error) {
         console.log(`El repositorio ${repo.nombreRepo} no existe.`);
     }
+   
+    // Comprobar si el repositorio tiene commits
+    try {
+        const respuestaCommits = await axios.get(urlCommits, {
+            headers: {
+            Authorization: `Token ${token}`
+            }
+        });
+        const commits = await respuestaCommits.data;
+        if (commits.length === 0) {
+            console.log(`El repositorio ${repo.nombreRepo} no tiene commits.`);
+        } else {
+            console.log(`El repositorio ${repo.nombreRepo} tiene ${commits.length} commits.`);
+            hasCommits = commits.length;
+        }
+    } catch (error) {
+        console.log(`El repositorio ${repo.nombreRepo} no existe.`);
+    }
+
+    // Comprobar si el repositorio tiene branches
+    try{
+        const respuestaBranches = await axios.get(urlBranches, {
+            headers: {
+            Authorization: `Token ${token}`
+            }
+        });
+    
+        const branches = await respuestaBranches.data;
+        hasBranches = branches.map(branch => branch.name)
+    }   catch (error) {
+        console.log(`El repositorio ${repo.nombreRepo} no existe.`);
+    }
+
     let respuesta = {
         usuario: repo.usuario,
         repo: repo.nombreRepo,
-        existe: existe
+        existe: existe,
+        commits: hasCommits,
+        branches: hasBranches
     }
     return respuesta
 }
