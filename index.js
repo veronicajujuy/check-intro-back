@@ -3,6 +3,7 @@ import express from 'express'
 import bodyParser from 'body-parser';
 import cors from 'cors'
 import {repos} from './repos.js';
+import { PORT } from './config.js';
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,29 +28,7 @@ app.get('/existenRepos', async (req, res) => {
     }
   });
 
-  app.get('/existenCommits', async (req, res) => {
-    try {
-      const resultado = await comprobarExistenCommits(repos);
-      console.log(resultado)
-      res.json(resultado);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send('Hubo un error al procesar la solicitud.');
-    }
-  });
-
-  app.get('/existenBranches', async (req, res) => {
-    try {
-      const resultado = await comprobarExistenBranches(repos);
-      console.log(resultado)
-      res.json(resultado);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send('Hubo un error al procesar la solicitud.');
-    }
-  });
-
-  app.post('/envioDatos', (req, res) => {
+app.post('/envioDatos', (req, res) => {
     try{
       let respuesta = req.body.datos
       respuesta.map(item => repos.push(item))
@@ -61,6 +40,6 @@ app.get('/existenRepos', async (req, res) => {
     }
   })
 
-app.listen(3000, () => {
-  console.log('Servidor iniciado en el puerto 3000');
+app.listen(PORT, () => {
+  console.log('Servidor iniciado en el puerto ',PORT);
 });
