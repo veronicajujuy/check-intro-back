@@ -1,6 +1,7 @@
 import axios from "axios"
-import { token } from "./token.js";
-import { obtenerRepos } from "./funciones/obtenerRepos.js";
+import dotenv from 'dotenv'
+dotenv.config()
+const token = process.env.GITHUB_TOKEN
 
 const obtenerUsuarioYNombreRepo = (direccion) => {
     // Eliminar el prefijo "https://github.com/" si está presente
