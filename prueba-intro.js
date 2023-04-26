@@ -36,7 +36,7 @@ const comprobarReposGit = async (repo) => {
 
         
         } catch (error) {
-        console.log(`El repositorio ${repo.nombreRepo} no existe.`);
+        console.log(`error`,error);
     }
    
     // Comprobar si el repositorio tiene commits
