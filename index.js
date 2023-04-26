@@ -2,7 +2,7 @@ import {comprobarRepositorios, comprobarExistenCommits, comprobarExistenBranches
 import express from 'express'
 import bodyParser from 'body-parser';
 import cors from 'cors'
-import {repos} from './repos.js';
+import {repos, limpiarRepos} from './repos.js';
 import { PORT } from './config.js';
 
 const app = express();
@@ -33,6 +33,17 @@ app.post('/envioDatos', (req, res) => {
       let respuesta = req.body.datos
       respuesta.map(item => repos.push(item))
       console.log("repos",repos)
+      res.send("ok")
+    }catch (error){
+      console.log(error);
+      res.status(500).send('Hubo un error al procesar la solicitud.');
+    }
+  })
+
+  app.post('/limpiarDatos', (req, res) => {
+    try{
+      let respuesta = req.body
+      limpiarRepos()
       res.send("ok")
     }catch (error){
       console.log(error);
