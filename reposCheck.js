@@ -1,12 +1,9 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import { repos } from "./repos.js";
+
 dotenv.config();
 const token = process.env.GITHUB_TOKEN;
-const repos = [
-  "https://github.com/bootcamp-FI/JAVASCRIPT",
-  "https://github.com/BryanCPineda/API-weather",
-];
-
 // limpia la direccion y el repositorio
 const obtenerUsuarioYNombreRepo = (direccion) => {
   // Eliminar el prefijo "https://github.com/" si está presente
@@ -76,28 +73,6 @@ const comprobarReposGit = async (repo) => {
     console.log(`El repositorio ${repo.nombreRepo} no existe.`);
   }
 
-  //   // chequear archivos en cada rama
-  //   let archivoBranches = [];
-  //   try {
-  //     archivoBranches = await Promise.all(
-  //       hasBranches.map(async (item) => {
-  //         const files = await getFilesInBranch(
-  //           repo.usuario,
-  //           repo.nombreRepo,
-  //           item
-  //         );
-  //         console.log(
-  //           `Los archivos en la rama ${item} del repositorio ${
-  //             repo.nombreRepo
-  //           } son: ${files.join(", ")}`
-  //         );
-  //         return { rama: item, archivos: files };
-  //       })
-  //     );
-  //   } catch (error) {
-  //     console.log(`Error al obtener archivos de las ramas`);
-  //   }
-
   let respuesta = {
     usuario: repo.usuario,
     repo: repo.nombreRepo,
@@ -109,14 +84,17 @@ const comprobarReposGit = async (repo) => {
   return respuesta;
 };
 
-const usuariosGit = repos.map((item) => {
-  return obtenerUsuarioYNombreRepo(item);
-});
-
 const resultadosGit = async () => {
-  await usuariosGit.map((user) => {
-    return comprobarReposGit(user);
-  });
+  console.log("Iniciando verificación de repositorios...");
+
+  const usuariosGit = repos.map((item) => obtenerUsuarioYNombreRepo(item));
+
+  const resultados = await Promise.all(
+    usuariosGit.map((user) => comprobarReposGit(user))
+  );
+
+  console.log("Resultados de la verificación:", resultados);
+  return resultados;
 };
 
-resultadosGit();
+export { resultadosGit };
