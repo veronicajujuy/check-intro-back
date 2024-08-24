@@ -189,9 +189,11 @@ const comprobarBranches = async (repo) => {
 };
 
 async function comprobarRepositorios(repos) {
+  console.log("repos", repos);
   const usuariosGit = repos.map((item) => {
     return obtenerUsuarioYNombreRepo(item);
   });
+  console.log("usuariosGit", usuariosGit);
   const trabajosGit = usuariosGit.map((userGit) => {
     return comprobarReposGit(userGit);
   });
